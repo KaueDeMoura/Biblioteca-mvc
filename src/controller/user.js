@@ -10,7 +10,6 @@ class UserController {
             throw new Error('Nome, email e senha são obrigatórios');
         }
 
-        // INSERT INTO users (nome, email, senha) VALUES (nome, email, senha);
         const user = await User
             .create({ nome, email, senha });
 
@@ -46,7 +45,6 @@ class UserController {
         user.nome = nome;
         user.email = email;
         user.senha = senha;
-        // UPDATE users SET nome = nome, email = email, senha = senha WHERE id = id;
         user.save();
 
         return user;
