@@ -1,6 +1,8 @@
 const express = require('express');
-const UserApi = require('./src/api/user');
 const database = require('./src/config/database');
+
+const UserApi = require('./src/api/user');
+const PostApi = require('./src/api/post')
 
 const app = express()
 app.use(express.json())
@@ -14,6 +16,14 @@ app.get('/users', userApi.listarUsuario);
 app.post('/users', userApi.criarUsuario);
 app.put('/users/:id', userApi.alterarUsuario);
 app.delete('/users/:id', userApi.deletarUsuario);
+
+
+const postApi = new PostApi();
+
+app.get('/posts', postApi.listarPost);
+app.post('/posts', postApi.criarPost);
+app.put('/posts/:id', postApi.alterarPost);
+app.delete('/posts/:id', postApi.deletarPost);
 
 database.sync({ force: true })
     .then(() => {
