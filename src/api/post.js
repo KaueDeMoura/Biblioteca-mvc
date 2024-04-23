@@ -43,7 +43,7 @@ class PostApi {
         const controller = new PostController();
 
         try {
-            const posts = await controller.listarPosts();
+            const posts = await controller.listarPost();
             return res.status(200).send(posts);
         } catch (error) {
             return res.status(400).send({ error: error.message })
