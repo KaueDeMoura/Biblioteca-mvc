@@ -15,8 +15,7 @@ class UserController {
             throw new Error('Este email já está em uso');
         }
 
-        const user = await User
-            .create({ nome, email, senha });
+        const user = await User.create({ nome, email, senha });
 
         return user;
     }
@@ -63,7 +62,6 @@ class UserController {
         const user = await this.buscarPorId(id);
 
         user.destroy();
-
 
     }
 
