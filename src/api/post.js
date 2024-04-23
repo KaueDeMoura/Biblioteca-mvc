@@ -1,10 +1,10 @@
 const PostController = require('../controller/post');
 
-class UserApi {
+class PostApi {
     async criarPost(req, res) {
-        const titulo = req.body.nome
+        const titulo = req.body.titulo;
         const conteudo = req.body.email;
-        const controller = new postController();
+        const controller = new PostController();
 
         try {
             const post = await controller.criarPost(titulo, conteudo);
@@ -51,4 +51,4 @@ class UserApi {
     }
 }
 
-module.exports = UserApi;
+module.exports = PostApi;
