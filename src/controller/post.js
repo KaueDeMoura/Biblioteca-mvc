@@ -1,16 +1,23 @@
 const Post = require('../model/post');
+const User = require('../model/user');
 
 class PostController {
     async criarPost(titulo, conteudo) {
         if (
+            id === undefined ||
             titulo === undefined
             || conteudo === undefined
         ) {
 
-            throw new Error('titulo e conteudo são obrigatórios');
+            throw new Error('Id, titulo e conteudo são obrigatórios');
+        }
+
+        const user = await User.findByPk(id);
+        if (!user) {
+            throw new Error('Usuário não encontrado');
         }
         
-        const post = await Post.create({ titulo, conteudo });
+        const post = await Post.create({id, titulo, conteudo });
 
         return post;
     }

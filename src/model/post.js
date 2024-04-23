@@ -13,6 +13,9 @@ class Post {
             },
             conteudo: {
                 type: database.Sequelize.STRING
+            },
+            id_user: {
+                type: database.Sequelize.STRING
             }
 
         });
