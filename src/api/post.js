@@ -3,7 +3,7 @@ const PostController = require('../controller/post');
 class PostApi {
     async criarPost(req, res) {
         const titulo = req.body.titulo;
-        const conteudo = req.body.email;
+        const conteudo = req.body.conteudo;
         const controller = new PostController();
 
         try {
