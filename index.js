@@ -12,18 +12,24 @@ app.get('/', (req, res) => {
 })
 const userApi = new UserApi();
 
-app.get('/users', userApi.listarUsuario);
+app.post('/login', userApi.login);
 app.post('/users', userApi.criarUsuario);
+
+
+app.use(userApi.validarToken);
+
+app.get('/users', userApi.listarUsuario);
 app.put('/users/:id', userApi.alterarUsuario);
 app.delete('/users/:id', userApi.deletarUsuario);
-
-
 const postApi = new PostApi();
 
 app.get('/posts', postApi.listarPost);
 app.post('/posts', postApi.criarPost);
 app.put('/posts/:id', postApi.alterarPost);
 app.delete('/posts/:id', postApi.deletarPost);
+
+
+
 
 database.sync({ force: true })
     .then(() => {

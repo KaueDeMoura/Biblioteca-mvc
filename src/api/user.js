@@ -15,6 +15,30 @@ class UserApi {
         }
     }
 
+    async login(req, res) {
+        try {
+            const { email, senha } = req.body;
+            const controller = new UserController();
+            const token = await controller.login(email, senha);
+            return res.status(200).send(token);
+        } catch (error) {
+            return res.status(400).send({ error: error.message })
+        }
+    }
+
+    // Método para validar o token
+    async validarToken(req, res, next) {
+        const token = req.headers.authorization;
+        const controller = new UserController();
+
+        try {
+            await controller.validarToken(token);
+            next();
+        } catch (error) {
+            return res.status(400).send({ error: error.message })
+        }
+    }
+
     async alterarUsuario(req, res) {
         const { id } = req.params;
         const { nome, email, senha } = req.body;

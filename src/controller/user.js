@@ -1,5 +1,9 @@
 const User = require('../model/user');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
+const salt = 10
+const JWT_SECRET_KEY = 'jacksonlindo'
 class UserController {
     async criarUsuario(nome, email, senha) {
         if (
@@ -15,7 +19,7 @@ class UserController {
             throw new Error('Este email já está em uso');
         }
 
-        const user = await User.create({ nome, email, senha });
+        const user = await User.create({ nome, email, senha: await bcrypt.hash(senha, salt) });
 
         return user;
     }
@@ -68,6 +72,48 @@ class UserController {
     async listarUsuarios() {
         return User.findAll();
     }
+
+    async login(email, senha) {
+        if (!email || !senha) {
+
+            throw new Error('Email e senha são obrigatórios');
+        }
+
+        // SELECT * FROM users WHERE email = email;
+        // Busca o usuário pelo email
+        const user = await User.findOne({ where: { email }});
+
+        if (!user) {
+
+            throw new Error('Usuário não encontrado');
+        }
+
+        // Compara a senha informada com a senha do usuário
+        const senhaValida = await bcrypt.compare(senha, user.senha);
+
+        if (!senhaValida) {
+
+            throw new Error('Senha inválida');
+        }
+
+        // Gera o token a partir da assinatura com a chave secreta
+        const jwtToken = jwt.sign({ id: user.id }, JWT_SECRET_KEY);
+
+
+        return { token: jwtToken }
+    }
+
+    async validarToken(token) {
+        try {
+            // Verifica se o token é válido e retorna o payload
+            const payload = jwt.verify(token, JWT_SECRET_KEY);
+            return payload;
+        } catch (error) {
+            throw new Error('Token inválido');
+        }
+    }
+
+
 }
 
 module.exports = UserController;
